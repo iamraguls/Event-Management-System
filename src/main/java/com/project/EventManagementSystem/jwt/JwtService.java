@@ -67,4 +67,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public List<String> extractRoles(String token) {
+        return extractClaim(token, claims-> claims.get("roles", List.class));
+    }
 }
