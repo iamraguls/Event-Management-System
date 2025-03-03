@@ -51,13 +51,9 @@ public class AuthService {
     public String loginUser(LoginDTO loginDTO) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),loginDTO.getPassword()));
         Users user = usersRepository.findByEmail(loginDTO.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
-        if (!bCryptPasswordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-            return "Invalid email or password!";
-        }
         String token = jwtService.generateToken(new HashMap<>(), user, user.getRoles());
         return token;
     }
-
 
     public String registerAdmin(UserRegistrationDTO userRegistrationDTO) {
         boolean oldUser = usersRepository.findByEmail(userRegistrationDTO.getEmail()).isPresent();
