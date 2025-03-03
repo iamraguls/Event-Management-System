@@ -6,6 +6,8 @@ import com.project.EventManagementSystem.jwt.JwtService;
 import com.project.EventManagementSystem.model.Users;
 import com.project.EventManagementSystem.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +30,9 @@ public class AuthService {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     public String registerUser(UserRegistrationDTO userRegistrationDTO) {
         boolean oldUser = usersRepository.findByEmail(userRegistrationDTO.getEmail()).isPresent();
         if(oldUser){
@@ -44,7 +49,7 @@ public class AuthService {
     }
 
     public String loginUser(LoginDTO loginDTO) {
-
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),loginDTO.getPassword()));
         Users user = usersRepository.findByEmail(loginDTO.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
         if (!bCryptPasswordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             return "Invalid email or password!";
