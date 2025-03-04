@@ -43,9 +43,8 @@ public class JwtService {
         return extractClaim(token,claims -> claims.getSubject());
     }
 
-    public String generateToken(Map<String ,Object> extractClaims, UserDetails userDetails, List<String> roles){
+    public String generateToken(UserDetails userDetails, List<String> roles){
         return Jwts.builder()
-                .setClaims(extractClaims)
                 .setSubject(userDetails.getUsername())
                 .claim("roles", roles)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

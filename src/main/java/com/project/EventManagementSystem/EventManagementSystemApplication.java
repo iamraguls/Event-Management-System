@@ -9,7 +9,6 @@ public class EventManagementSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EventManagementSystemApplication.class, args);
-		System.out.println(new BCryptPasswordEncoder().encode("1234"));
 	}
 
 }
