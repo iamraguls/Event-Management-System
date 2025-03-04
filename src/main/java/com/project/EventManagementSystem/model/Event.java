@@ -1,5 +1,6 @@
 package com.project.EventManagementSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class Event {
     private String location;
     private int capacity;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "event")
     private List<Registration> registrations;
 

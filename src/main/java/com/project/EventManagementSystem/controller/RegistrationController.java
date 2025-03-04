@@ -1,5 +1,6 @@
 package com.project.EventManagementSystem.controller;
 
+import com.project.EventManagementSystem.dto.RegistrationDTO;
 import com.project.EventManagementSystem.model.Registration;
 import com.project.EventManagementSystem.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class RegistrationController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Registration> getAllRegistrations(){
+    public List<RegistrationDTO> getAllRegistrations(){
         return registrationService.getAllRegistrations();
     }
 

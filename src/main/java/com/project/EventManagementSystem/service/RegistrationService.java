@@ -1,5 +1,6 @@
 package com.project.EventManagementSystem.service;
 
+import com.project.EventManagementSystem.dto.RegistrationDTO;
 import com.project.EventManagementSystem.model.Event;
 import com.project.EventManagementSystem.model.Registration;
 import com.project.EventManagementSystem.model.Users;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RegistrationService {
@@ -25,8 +27,9 @@ public class RegistrationService {
     @Autowired
     private EventRepository eventRepository;
 
-    public List<Registration> getAllRegistrations() {
-        return registrationRepository.findAll();
+    public List<RegistrationDTO> getAllRegistrations() {
+        List<Registration> registrations = registrationRepository.findAll();
+        return registrations.stream().map(RegistrationDTO::new).collect(Collectors.toList());  // 👈🔥 Convert to DTO
     }
 
     public String registerForEvent(Long userId, Long eventId) {
