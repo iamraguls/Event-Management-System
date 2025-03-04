@@ -22,15 +22,19 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('ADMIN')")
     public String registerForEvent(@RequestParam Long userId, @RequestParam Long eventId){
         return registrationService.registerForEvent(userId, eventId);
     }
 
     @DeleteMapping("/cancel")
-    @PreAuthorize("hasRole('ADMIN')")
     public String cancelRegistrationForEvent(@RequestParam Long userId, @RequestParam Long eventId){
         return registrationService.cancelRegistrationForEvent(userId, eventId);
+    }
+
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Registration> getUserRegistrations(@PathVariable Long userId) {
+        return registrationService.getUserRegistrations(userId);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.project.EventManagementSystem.controller;
 
+import com.project.EventManagementSystem.dto.AuthResponseDTO;
 import com.project.EventManagementSystem.dto.LoginDTO;
 import com.project.EventManagementSystem.dto.UserRegistrationDTO;
 import com.project.EventManagementSystem.model.Users;
@@ -15,13 +16,13 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/user/registration")
+    @PostMapping("/user/register")
     public String registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO){
         return authService.registerUser(userRegistrationDTO);
     }
 
-    @PostMapping("/user/login")
-    public String loginUser(@RequestBody LoginDTO loginDTO){
+    @PostMapping("/login")
+    public AuthResponseDTO loginUser(@RequestBody LoginDTO loginDTO){
         return authService.loginUser(loginDTO);
     }
 

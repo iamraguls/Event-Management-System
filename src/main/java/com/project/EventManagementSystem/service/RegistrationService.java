@@ -37,7 +37,7 @@ public class RegistrationService {
             return "Event is fully booked!";
         }
 
-        Optional<Registration> existingRegistration = registrationRepository.findByUsersAndEvent(user,event);
+        Optional<Registration> existingRegistration = registrationRepository.findByUserAndEvent(user,event);
         if(existingRegistration.isPresent()){
             return "User already registered for this event!";
         }
@@ -58,7 +58,7 @@ public class RegistrationService {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new RuntimeException("Event not found"));
 
-        Optional<Registration> existingRegistration = registrationRepository.findByUsersAndEvent(user,event);
+        Optional<Registration> existingRegistration = registrationRepository.findByUserAndEvent(user,event);
         if(existingRegistration.isEmpty()){
             return "User not registered for this event!";
         }
@@ -68,6 +68,11 @@ public class RegistrationService {
         event.setCapacity(event.getCapacity()+1);
         eventRepository.save(event);
         return "Registration cancelled successfully!";
+    }
+
+    public List<Registration> getUserRegistrations(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return registrationRepository.findByUser(user);
     }
 }
 

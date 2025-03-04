@@ -1,10 +1,13 @@
 package com.project.EventManagementSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class Users implements UserDetails {
     private String phone;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>(); // mutable list
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Registration> registrations;

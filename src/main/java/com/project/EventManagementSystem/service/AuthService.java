@@ -1,5 +1,6 @@
 package com.project.EventManagementSystem.service;
 
+import com.project.EventManagementSystem.dto.AuthResponseDTO;
 import com.project.EventManagementSystem.dto.LoginDTO;
 import com.project.EventManagementSystem.dto.UserRegistrationDTO;
 import com.project.EventManagementSystem.jwt.JwtService;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -48,11 +50,12 @@ public class AuthService {
         return "User registered successfully!";
     }
 
-    public String loginUser(LoginDTO loginDTO) {
+    public AuthResponseDTO loginUser(LoginDTO loginDTO) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),loginDTO.getPassword()));
         Users user = usersRepository.findByEmail(loginDTO.getEmail()).orElseThrow(()-> new RuntimeException("user not found"));
-        String token = jwtService.generateToken(new HashMap<>(), user, user.getRoles());
-        return token;
+        AuthResponseDTO auth = new AuthResponseDTO();
+        auth.setToken(jwtService.generateToken(new HashMap<>(), user, user.getRoles()));
+        return auth;
     }
 
     public String registerAdmin(UserRegistrationDTO userRegistrationDTO) {
@@ -80,10 +83,18 @@ public class AuthService {
         return "User deleted successfully!";
     }
 
-    public String updateUserRole(Long id, String role) {
-        Users user = usersRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found!"));
-        user.setRoles(List.of(role));
-        usersRepository.save(user);
-        return "User role updated successfully!";
+    public Users getUserById(Long id) {
+        return usersRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found!"));
     }
+
+    public Users updateUserRole(Long id, String role) {
+        Users user = usersRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("User not found!"));
+        List<String> updatedRoles = new ArrayList<>(user.getRoles()); // Convert to mutable list
+        if (!updatedRoles.contains(role)) {
+            updatedRoles.add(role);
+        }
+        user.setRoles(updatedRoles);
+        return usersRepository.save(user);
+    }
+
 }

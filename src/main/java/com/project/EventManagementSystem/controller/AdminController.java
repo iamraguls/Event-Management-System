@@ -19,6 +19,7 @@ public class AdminController {
     @Autowired
     private AuthService authService;
 
+    @PostMapping("/register")
     public String registerAdmin(@RequestBody UserRegistrationDTO userRegistrationDTO, HttpServletRequest request){
         return authService.registerAdmin(userRegistrationDTO);
     }
@@ -28,13 +29,18 @@ public class AdminController {
         return authService.getAllUsers();
     }
 
+    @GetMapping("/users/{id}")
+    public Users getUserById(@PathVariable Long id) {
+        return authService.getUserById(id);
+    }
+
     @DeleteMapping("/users/{id}")
     public String deleteUser(@PathVariable Long id) {
         return authService.deleteUser(id);
     }
 
     @PutMapping("/users/{id}/role")
-    public String updateUserRole(@PathVariable Long id, @RequestParam String role) {
+    public Users updateUserRole(@PathVariable Long id, @RequestParam String role) {
         return authService.updateUserRole(id, role);
     }
 
