@@ -55,11 +55,3 @@ The **Event Management System** is a robust and scalable **Spring Boot** backend
 | `DELETE` | `/api/tickets/cancel/{ticketId}` | Cancel a ticket |
 
 ---
-
-## ⚡ Installation & Setup  
-
-### 🖥️ **Backend (Spring Boot) Setup**  
-1️⃣ **Clone the Repository**  
-```bash
-git clone https://github.com/your-username/event-management-system.git
-cd event-management-system
